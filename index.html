@@ -1,0 +1,551 @@
+     <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Convite para Festa Junina</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Material+Icons" rel="stylesheet" />
+  <style>
+    /* Reset and basic */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #fef3c7, #ef4444);
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+    }
+    a {
+      color: #ef4444;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    a:hover,
+    a:focus {
+      color: #b91c1c;
+    }
+    /* Glassmorphism base */
+    .glass {
+      background: rgba(255 255 255 / 0.15);
+      backdrop-filter: blur(12px) saturate(180%);
+      -webkit-backdrop-filter: blur(12px) saturate(180%);
+      border: 1px solid rgba(255 255 255 / 0.3);
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgb(239 68 68 / 0.15);
+    }
+
+    /* Layout Container */
+    #app {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: 64px 1fr 48px;
+      grid-template-areas:
+        "header header"
+        "sidebar main"
+        "footer footer";
+      height: 100vh;
+      min-height: 600px;
+    }
+
+    /* Header */
+    header {
+      grid-area: header;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background-color 0.3s ease;
+    }
+    header > .brand {
+      font-weight: 700;
+      font-size: clamp(1.4rem, 2vw, 1.8rem);
+      color: #b91c1c;
+      letter-spacing: -0.5px;
+      user-select: none;
+    }
+    header nav {
+      display: flex;
+      gap: 24px;
+    }
+    header nav a {
+      color: white;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 8px 14px;
+      border-radius: 8px;
+      background: rgba(255 255 255 / 0.15);
+      box-shadow: 0 2px 12px rgb(239 68 68 / 0.25);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    header nav a:hover,
+    header nav a:focus {
+      background: #b91c1c;
+      color: white;
+    }
+
+    /* Glass header background */
+    header.glass {
+      background: rgba(255 255 255 / 0.12);
+      backdrop-filter: blur(16px) saturate(180%);
+    }
+
+    /* Sidebar */
+    aside {
+      grid-area: sidebar;
+      background: rgba(255 255 255 / 0.10);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(255 255 255 / 0.3);
+      display: flex;
+      flex-direction: column;
+      padding: 2rem 1.5rem;
+      overflow-y: auto;
+      color: white;
+    }
+    aside h2 {
+      font-weight: 600;
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid rgba(255 255 255 / 0.3);
+      padding-bottom: 0.5rem;
+      user-select: none;
+    }
+    nav.sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+    }
+    nav.sidebar-nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 12px;
+      transition: background-color 0.25s ease;
+    }
+    nav.sidebar-nav a:hover,
+    nav.sidebar-nav a:focus {
+      background: #b91c1c;
+      color: white;
+    }
+    .material-icons {
+      font-size: 24px;
+    }
+    .badge {
+      background: #ef4444;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      margin-left: auto;
+    }
+
+    /* Main content */
+    main {
+      grid-area: main;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      padding: 32px 48px;
+      background: linear-gradient(135deg, #fafaf9, #ffedd5);
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+    main h1 {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      color: #b91c1c;
+      text-shadow: 1px 1px 5px rgb(244 114 182 / 0.2);
+      user-select: none;
+    }
+    main p {
+      font-size: clamp(1rem, 1.5vw, 1.25rem);
+      line-height: 1.5;
+      max-width: 600px;
+      color: #4b4b4b;
+    }
+    .invite-image {
+      width: 100%;
+      max-width: 800px;
+      aspect-ratio: 16 / 9;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgb(239 68 68 / 0.15);
+      position: relative;
+      user-select: none;
+    }
+    .invite-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    /* RSVP Form */
+    form {
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #b91c1c;
+      user-select: none;
+    }
+    input[type="text"],
+    input[type="email"],
+    select {
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1.5px solid #b91c1c;
+      font-size: 1rem;
+      transition: border-color 0.25s ease;
+      outline-offset: 2px;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    select:focus {
+      border-color: #f43f5e;
+      box-shadow: 0 0 8px 2px rgb(244 114 182 / 0.5);
+      outline: none;
+    }
+    .error {
+      color: #b91c1c;
+      font-size: 0.85rem;
+      margin-top: -16px;
+      margin-bottom: 8px;
+    }
+    button[type="submit"] {
+      background: #b91c1c;
+      color: white;
+      padding: 14px 0;
+      font-weight: 700;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 16px;
+      cursor: pointer;
+      user-select: none;
+      box-shadow: 0 4px 12px rgb(185 29 29 / 0.7);
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    button[type="submit"]:hover,
+    button[type="submit"]:focus {
+      background: #ef4444;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgb(239 68 68 / 0.9);
+      outline: none;
+    }
+    button[type="submit"]:disabled {
+      background: #fca5a5;
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Footer */
+    footer {
+      grid-area: footer;
+      height: 48px;
+      background: rgba(255 255 255 / 0.12);
+      backdrop-filter: blur(20px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 28px;
+      border-top: 1px solid rgba(255 255 255 / 0.3);
+      font-size: 0.9rem;
+      color: #b91c1c;
+      user-select: none;
+    }
+    .social-links {
+      display: flex;
+      gap: 16px;
+    }
+    .social-links a {
+      color: #b91c1c;
+      font-size: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.3s ease;
+    }
+    .social-links a:hover,
+    .social-links a:focus {
+      color: #ef4444;
+      outline: none;
+    }
+
+    /* Scrollbar customization for better visuals */
+    main::-webkit-scrollbar,
+    aside::-webkit-scrollbar {
+      width: 8px;
+    }
+    main::-webkit-scrollbar-track,
+    aside::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    main::-webkit-scrollbar-thumb,
+    aside::-webkit-scrollbar-thumb {
+      background-color: rgba(185, 29, 29, 0.5);
+      border-radius: 8px;
+    }
+
+    /* Responsive Queries */
+    @media (max-width: 1023px) {
+      #app {
+        grid-template-columns: 64px 1fr;
+      }
+      aside {
+        padding: 2rem 0.5rem;
+      }
+      nav.sidebar-nav a {
+        font-size: 0;
+        justify-content: center;
+      }
+      nav.sidebar-nav a span {
+        display: none;
+      }
+      nav.sidebar-nav a .material-icons {
+        font-size: 28px;
+      }
+    }
+    @media (max-width: 767px) {
+      #app {
+        grid-template-columns: 1fr;
+        grid-template-rows: 64px 1fr 48px;
+        grid-template-areas:
+          "header"
+          "main"
+          "footer";
+        height: 100vh;
+      }
+      aside {
+        display: none;
+      }
+      main {
+        height: auto;
+        padding: 24px 24px 48px;
+      }
+      main h1 {
+        font-size: clamp(1.6rem, 5vw, 2.8rem);
+      }
+    }
+
+    /* Confetti Animation */
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+    .confetti {
+      position: fixed;
+      pointer-events: none;
+      width: 10px;
+      height: 10px;
+      background-color: #ef4444;
+      opacity: 0.8;
+      border-radius: 2px;
+      animation: confetti-fall linear forwards;
+      z-index: 200;
+      filter: drop-shadow(0 0 2px #b91c1c);
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header class="glass" role="banner" aria-label="Cabeçalho do convite para festa junina">
+      <div class="brand" tabindex="0">Festa Junina 2024</div>
+      <nav aria-label="Navegação principal">
+        <a href="#" tabindex="0" aria-current="page">Convite</a>
+        <a href="#" tabindex="0">Galeria</a>
+        <a href="#" tabindex="0">Contato</a>
+      </nav>
+    </header>
+
+    <aside role="complementary" aria-label="Navegação lateral" tabindex="0">
+      <h2>Menu</h2>
+      <nav class="sidebar-nav" aria-label="Menu de navegação da aplicação">
+        <a href="#" tabindex="0" aria-label="Página inicial">
+          <span class="material-icons" aria-hidden="true">home</span>
+          <span>Página Inicial</span>
+          <span class="badge" aria-label="3 notificações pendentes">3</span>
+        </a>
+        <a href="#" tabindex="0" aria-label="Convites enviados">
+          <span class="material-icons" aria-hidden="true">email</span>
+          <span>Convites</span>
+        </a>
+        <a href="#" tabindex="0" aria-label="Configurações">
+          <span class="material-icons" aria-hidden="true">settings</span>
+          <span>Configurações</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main role="main" tabindex="0" aria-label="Conteúdo principal do convite">
+      <h1>Você está convidado para nossa Festa Junina!</h1>
+      <p>Venha celebrar com muita alegria, comidas típicas, quadrilha e música boa!</p>
+
+      <div class="invite-image" aria-label="Imagem decorativa de festa junina com bandeirinhas coloridas e fogueira">
+        <img 
+          src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/9ab7aff6-05a3-45f8-b905-05fd2012fd3e.png" 
+          alt="Decoração tradicional de festa junina com bandeirinhas coloridas penduradas e uma fogueira brilhante no centro" 
+          loading="lazy"
+          onerror="this.onerror=null;this.src='https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/6558173f-890d-412e-a32c-b2f123e77f3b.png';"
+        />
+      </div>
+
+      <section aria-labelledby="details-title">
+        <h2 id="details-title" style="color: #b91c1c; margin-bottom: 12px;">Detalhes da Festa</h2>
+        <p><strong>Data:</strong> Sábado, 29 de Junho de 2024</p>
+        <p><strong>Hora:</strong> 18:00 às 23:00</p>
+        <p><strong>Local:</strong> Sítio Recanto Feliz, Rua das Flores, 123 - Cidade</p>
+        <p><strong>Traje:</strong> Roupa caipira ou traje típico junino</p>
+      </section>
+
+      <section aria-labelledby="rsvp-title" style="margin-top: 40px;">
+        <h2 id="rsvp-title" style="color: #b91c1c; margin-bottom: 12px;">Confirme sua Presença</h2>
+        <form id="rsvpForm" novalidate aria-describedby="formStatus" aria-live="polite">
+          <label for="nameInput">Nome completo</label>
+          <input type="text" id="nameInput" name="name" autocomplete="name" aria-required="true" required />
+          <span class="error" id="nameError" aria-live="polite"></span>
+
+          <label for="emailInput">Email</label>
+          <input type="email" id="emailInput" name="email" autocomplete="email" aria-required="true" required />
+          <span class="error" id="emailError" aria-live="polite"></span>
+
+          <label for="attendanceInput">Vai comparecer?</label>
+          <select id="attendanceInput" name="attendance" aria-required="true" required>
+            <option value="" disabled selected>Selecione</option>
+            <option value="yes">Sim, estarei presente</option>
+            <option value="no">Não poderei comparecer</option>
+          </select>
+          <span class="error" id="attendanceError" aria-live="polite"></span>
+
+          <button type="submit" aria-label="Enviar confirmação de presença">Confirmar Presença</button>
+          <div id="formStatus" role="alert" style="margin-top: 8px;"></div>
+        </form>
+      </section>
+    </main>
+
+    <footer role="contentinfo" aria-label="Rodapé do site">
+      <div>&copy; 2024 Festa Junina. Todos os direitos reservados.</div>
+      <div class="social-links" aria-label="Redes sociais">
+        <a href="https://www.facebook.com/festajunina" target="_blank" rel="noopener" aria-label="Facebook da festa junina">
+          <span class="material-icons" aria-hidden="true">facebook</span>
+        </a>
+        <a href="https://www.instagram.com/festajunina" target="_blank" rel="noopener" aria-label="Instagram da festa junina">
+          <span class="material-icons" aria-hidden="true">instagram</span>
+        </a>
+        <a href="https://twitter.com/festajunina" target="_blank" rel="noopener" aria-label="Twitter da festa junina">
+          <span class="material-icons" aria-hidden="true">twitter</span>
+        </a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Blur glass header on scroll for visual effect
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', () => {
+      if(window.scrollY > 10) {
+        header.classList.add('glass');
+      } else {
+        header.classList.remove('glass');
+      }
+    });
+
+    // Form validation and optimistic "submit"
+    const form = document.getElementById('rsvpForm');
+    const nameInput = form.name;
+    const emailInput = form.email;
+    const attendanceInput = form.attendance;
+    const nameError = document.getElementById('nameError');
+    const emailError = document.getElementById('emailError');
+    const attendanceError = document.getElementById('attendanceError');
+    const formStatus = document.getElementById('formStatus');
+
+    function validateEmail(email) {
+      // Basic RFC 5322 compliant regex simplified
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function clearErrors() {
+      nameError.textContent = '';
+      emailError.textContent = '';
+      attendanceError.textContent = '';
+      formStatus.textContent = '';
+      formStatus.style.color = '';
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearErrors();
+
+      let valid = true;
+      if(nameInput.value.trim() === '') {
+        nameError.textContent = 'Por favor, insira seu nome completo.';
+        valid = false;
+      }
+      if(emailInput.value.trim() === '' || !validateEmail(emailInput.value)) {
+        emailError.textContent = 'Por favor, insira um email válido.';
+        valid = false;
+      }
+      if(!attendanceInput.value) {
+        attendanceError.textContent = 'Por favor, selecione sua presença.';
+        valid = false;
+      }
+
+      if(!valid) {
+        formStatus.textContent = 'Verifique os erros e corrija antes de enviar.';
+        formStatus.style.color = '#b91c1c';
+        return;
+      }
+
+      // Simulate optimistic update
+      formStatus.style.color = '#16a34a';
+      formStatus.textContent = 'Enviando confirmação...';
+
+      // Simulate server request delay
+      setTimeout(() => {
+        formStatus.textContent = 'Presença confirmada! Obrigado! Nos vemos na festa.';
+        form.reset();
+      }, 1500);
+    });
+
+    // Confetti effect
+    function createConfettiPiece() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDuration = 3 + Math.random() * 3 + 's';
+      confetti.style.width = 8 + Math.random() * 6 + 'px';
+      confetti.style.height = confetti.style.width;
+      confetti.style.borderRadius = Math.random() > 0.5 ? '0' : '50%';
+      document.body.appendChild(confetti);
+
+      setTimeout(() => {
+        confetti.remove();
+      }, 6000);
+    }
+
+    setInterval(createConfettiPiece, 250);
+  </script>
+</body>
+</html>
+
